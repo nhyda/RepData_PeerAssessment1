@@ -2,13 +2,10 @@
 title: "Reproducible Research: Peer Assessment 1"
 date: "Feb 5th 2016"
 output: 
-  html_document:
-    keep_md: true
-    toc: true
-    toc_depth: 2
-    number_sections: true
+  knitrBootstrap::bootstrap_document:
+    title: "ReproAssess1"
     theme: journal
-    highlight: pygments
+    highlight: Tomorrow
 ---
 
 ```{r echo=F, warning=FALSE,message=F}
@@ -86,7 +83,11 @@ ggplot(df.imput.day_sum,aes(total_step))+
 
 ### mean and median of the total number steps per day
 ```{r}
-knitr::kable(summarise(df.imput.day_sum,mean=mean(total_step),median=median(total_step)),align="l")
+before_impute=summarise(df.day_sum,mean=mean(total_step),median=median(total_step))
+after_impute=summarise(df.imput.day_sum,mean=mean(total_step),median=median(total_step))
+df.tmp=rbind(before_impute,after_impute)
+rownames(df.tmp)=c("before","after")
+knitr::kable(df.tmp,align="l")
 ```
 
 ###plot difference in mean value for each day
@@ -126,5 +127,12 @@ something doesn't seem right that all 8 dates that have NA value imputed to the 
 df.wide=spread(df,date,steps)
 knitr::kable(df.wide[1:5,1:10])
 ```
-
+but after spread the table, 
+8 days has totally missing data for 288 interval 
+it is clear that for each interval, 
+all imputed NA has the same value, which is the median of that interval across all date, 
+thus, the total number of steps per day increase the same for these 8 days
+the mean number increase 8x1141/62=147.23 days
+because they are calculate to be 0 instead of NA before impute
+the median
 
