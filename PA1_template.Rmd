@@ -6,28 +6,34 @@ output:
     title: "ReproAssess1"
     theme: journal
     highlight: Tomorrow
+    highlight.chooser: TRUE
+    theme.chooser: TRUE
 ---
 
 ```{r echo=F, warning=FALSE,message=F}
 library("dplyr")  
 library("ggplot2")
 library("tidyr")
+library("xtable")
 ```
 
 ## Loading and preprocessing the data
 
-```{r}
+```{r results='asis'}
 df<-read.csv("activity.csv")
 df=mutate(df,date=as.Date(date, format = '%Y-%m-%d'))
-knitr::kable(head(df),align="l")
+x=xtable(head(mutate(df,date=as.character(date))))
+print(x,type='html')
 ```
 
 ## What is total number of steps taken per day?
-```{r}
+```{r result='asis'}
 df.day_sum=df %>% group_by(date) %>% 
   summarize(total_step=sum(steps,na.rm=T),mean_step=mean(steps,na.rm=T),median_step=median(steps,na.rm=T),num_na=sum(is.na(steps))) #%>%
   #filter(num_na>0)
-knitr::kable(head(df.day_sum))
+
+x=xtable(df.day_sum %>% head() %>% mutate(date=as.character(date)))
+print(x,type='html')
 ggplot(df.day_sum,aes(total_step))+
   geom_histogram(bins = 10)+
   theme_bw()
