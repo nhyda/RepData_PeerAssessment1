@@ -140,6 +140,13 @@ something doesn't seem right that all 8 dates that have NA value imputed to the 
 df.wide=spread(df,date,steps)
 x=xtable((df.wide[1:5,1:10]))
 print(x,type='html')
+
+ggplot(df.time_sum,aes(interval,y=median_step))+
+  geom_point()+
+  geom_line()+
+  theme_bw()
+```
+
 ```
 but after spread the table, 
 8 days has totally missing data for 288 interval 
