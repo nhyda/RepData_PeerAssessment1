@@ -2,12 +2,19 @@
 title: "Reproducible Research: Peer Assessment 1"
 date: "Feb 5th 2016"
 output: 
-  knitrBootstrap::bootstrap_document:
-    title: "ReproAssess1"
-    theme: journal
-    highlight: Tomorrow
-    highlight.chooser: TRUE
-    theme.chooser: TRUE
+    html_document:
+      toc: true
+      toc_depth: 2
+      number_sections: true
+      theme: journal
+      highlight: pygments
+  #knitrBootstrap::bootstrap_document:
+  #  title: "ReproAssess1"
+  #  theme: journal
+  #  highlight: Tomorrow
+  #  highlight.chooser: TRUE
+  #  theme.chooser: TRUE
+  #  toc: true
 ---
 
 ```{r echo=F, warning=FALSE,message=F}
@@ -27,7 +34,7 @@ print(x,type='html')
 ```
 
 ## What is total number of steps taken per day?
-```{r result='asis'}
+```{r results='asis'}
 df.day_sum=df %>% group_by(date) %>% 
   summarize(total_step=sum(steps,na.rm=T),mean_step=mean(steps,na.rm=T),median_step=median(steps,na.rm=T),num_na=sum(is.na(steps))) #%>%
   #filter(num_na>0)
@@ -129,9 +136,10 @@ ggplot(df.weekday_sum,aes(interval,mean_step)) +
 
 ##for double check the result
 something doesn't seem right that all 8 dates that have NA value imputed to the same total
-```{r}
+```{r results='asis'}
 df.wide=spread(df,date,steps)
-knitr::kable(df.wide[1:5,1:10])
+x=xtable((df.wide[1:5,1:10]))
+print(x,type='html')
 ```
 but after spread the table, 
 8 days has totally missing data for 288 interval 
